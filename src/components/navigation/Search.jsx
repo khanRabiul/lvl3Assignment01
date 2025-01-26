@@ -1,18 +1,24 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setSearchTerm } from "../../features/filter/filterSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function Search() {
   const [input, setInput] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  // add debounce for search also redirect to home-page to show search results 
   useEffect(() => {
     const debounce = setTimeout(() => {
-      dispatch(setSearchTerm(input));
+      if (input.trim() !== "") {
+        dispatch(setSearchTerm(input));
+        navigate("/"); 
+      }
     }, 500); 
 
-    return () => clearTimeout(debounce); 
-  }, [input, dispatch]);
+    return () => clearTimeout(debounce); // আগের টাইমার ক্লিয়ার
+  }, [input, dispatch, navigate]);
 
   return (
     <form>
