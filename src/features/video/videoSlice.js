@@ -1,20 +1,29 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getVideo } from "./videoAPI";
 
-export const fetchVideo = createAsyncThunk('/video/fetchVideo', async (id)=>{
-    const video = await getVideo(id)
+export const fetchVideo = createAsyncThunk('/video/fetchVideo', async (id) => {
+    const video = await getVideo(id);
     return video;
-})
-const videSlice = createSlice({
-    name: 'video',
+});
+
+const videoSlice = createSlice({
+    name: "video",
     initialState: {
         video: {},
         loading: false,
         error: null,
     },
+    reducers: {
+        incrementLike(state) {
+            state.video.likes += 1;
+        },
+        incrementDislike(state) {
+            state.video.dislikes += 1;
+        },
+    },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchVideo.pending, (state, action) => {
+            .addCase(fetchVideo.pending, (state) => {
                 state.loading = true;
             })
             .addCase(fetchVideo.fulfilled, (state, action) => {
@@ -26,7 +35,8 @@ const videSlice = createSlice({
                 state.loading = false;
                 state.error = action.error.message;
             });
-    }
-})
+    },
+});
 
-export default videSlice.reducer;
+export const { incrementLike, incrementDislike } = videoSlice.actions;
+export default videoSlice.reducer;

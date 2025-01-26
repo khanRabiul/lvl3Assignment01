@@ -17,8 +17,8 @@ export default function Search() {
       }
     }, 500); 
 
-    return () => clearTimeout(debounce); // আগের টাইমার ক্লিয়ার
-  }, [input, dispatch, navigate]);
+    return () => clearTimeout(debounce); 
+  }, [input, dispatch, navigate]); // dependency: change input field, call dispatch and navigate to home
 
   return (
     <form>
